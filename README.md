@@ -1,7 +1,7 @@
 # 🛡️ ARGOS - Inteligencia Proactiva en Seguridad Personal
 
-[![Estado de Compilación](https://github.com/Sebxs22/Argos_mobile/actions/workflows/release.yml/badge.svg)](https://github.com/Sebxs22/Argos_mobile/actions/workflows/release.yml)
-[![Versión](https://img.shields.io/badge/Versi%C3%B3n-2.15.1-E53935.svg)](https://github.com/Sebxs22/Argos_mobile/releases/latest)
+[![Estado de Compilación](https://github.com/itssebxs/Argos_mobile/actions/workflows/release.yml/badge.svg)](https://github.com/itssebxs/Argos_mobile/actions/workflows/release.yml)
+[![Versión](https://img.shields.io/badge/Versi%C3%B3n-2.15.1-E53935.svg)](https://github.com/itssebxs/Argos_mobile/releases/latest)
 [![Propietario](https://img.shields.io/badge/Propiedad-Privada-red.svg)](#-aviso-legal-y-propiedad-intelectual)
 
 **ARGOS** es un ecosistema de seguridad móvil de alto rendimiento que redefine la protección personal mediante detección inteligente de riesgos y redes de respuesta inmediata. Diseñado con una estética **Glassmorphism Premium**, ofrece una experiencia de usuario fluida y sofisticada.
@@ -15,7 +15,7 @@ ARGOS incorpora un sistema de actualización **Seamless OTA** totalmente autóno
 - **Seguridad de Navegación (Nuevo)**: Las pantallas de emergencia ahora están blindadas; no se pueden cerrar sin clasificar o cancelar el evento.
 - **Visibilidad Adaptativa**: Interfaz optimizada para legibilidad total en modo claro y oscuro.
 
-[📥 **DESCARGAR ÚLTIMA VERSIÓN (APK OFICIAL)**](https://github.com/Sebxs22/Argos_mobile/releases/latest/download/app-release.apk)
+[📥 **DESCARGAR ÚLTIMA VERSIÓN (APK OFICIAL)**](https://github.com/itssebxs/Argos_mobile/releases/latest/download/app-release.apk)
 
 ---
 
@@ -48,7 +48,7 @@ El mapa escanea dinámicamente tu entorno usando la **Overpass API**. Encuentra 
 > 
 > Este repositorio es de visibilidad pública exclusivamente para fines de demostración de portafolio y revisión académica. **No posee ninguna licencia de uso libre.**
 > 
-> - **Todos los Derechos Reservados**: Luis Shagñay (Sebxs22) retiene la propiedad total y exclusiva de este software.
+> - **Todos los Derechos Reservados**: Luis Shagñay (itssebxs) retiene la propiedad total y exclusiva de este software.
 > - **Prohibida la Reproducción**: Queda estrictamente prohibido el uso, copia, modificación, fusión, publicación o distribución de este código sin un permiso previo y por escrito del autor.
 >
 > *Cualquier infracción a estos términos será tratada bajo las leyes de propiedad intelectual vigentes.*
