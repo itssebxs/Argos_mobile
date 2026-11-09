@@ -1,76 +1,80 @@
-# 🛡️ ARGOS - Inteligencia Proactiva en Seguridad Personal
+# 🛡️ ARGOS — Seguridad personal y comunitaria en el bolsillo
 
-[![Estado de Compilación](https://github.com/itssebxs/Argos_mobile/actions/workflows/release.yml/badge.svg)](https://github.com/itssebxs/Argos_mobile/actions/workflows/release.yml)
-[![Versión](https://img.shields.io/badge/Versi%C3%B3n-2.15.1-E53935.svg)](https://github.com/itssebxs/Argos_mobile/releases/latest)
-[![Propietario](https://img.shields.io/badge/Propiedad-Privada-red.svg)](#-aviso-legal-y-propiedad-intelectual)
+**ARGOS** es una aplicación móvil de seguridad personal construida con Flutter: detecta situaciones de riesgo con los sensores del teléfono, envía alertas SOS con geolocalización a un círculo de personas de confianza («guardianes»), muestra santuarios y rutas sobre un mapa, y mantiene la protección activa en segundo plano, aunque el teléfono esté bloqueado.
 
-**ARGOS** es un ecosistema de seguridad móvil de alto rendimiento que redefine la protección personal mediante detección inteligente de riesgos y redes de respuesta inmediata. Diseñado con una estética **Glassmorphism Premium**, ofrece una experiencia de usuario fluida y sofisticada.
+- 📱 **Versión (pubspec):** 2.16.3+122
+- 📥 **APK oficial:** [última release](https://github.com/itssebxs/Argos_mobile/releases/latest/download/app-release.apk)
+- 🌐 **Sitio del proyecto:** [argospage.vercel.app](https://argospage.vercel.app) (repositorio `itssebxs/Argospage`)
 
----
-
-## 🚀 Zaz Flow: Automatización Total (v2.15.1)
-
-ARGOS incorpora un sistema de actualización **Seamless OTA** totalmente autónomo. 
-- **Detección en Tiempo Real**: La app sincroniza versiones mediante Supabase Streams.
-- **Seguridad de Navegación (Nuevo)**: Las pantallas de emergencia ahora están blindadas; no se pueden cerrar sin clasificar o cancelar el evento.
-- **Visibilidad Adaptativa**: Interfaz optimizada para legibilidad total en modo claro y oscuro.
-
-[📥 **DESCARGAR ÚLTIMA VERSIÓN (APK OFICIAL)**](https://github.com/itssebxs/Argos_mobile/releases/latest/download/app-release.apk)
+> **Aviso de propiedad:** código público ≠ código abierto. Este repositorio es visible con fines de portafolio y revisión; no tiene licencia de uso libre. Todos los derechos reservados — Luis Shagñay (itssebxs). (Ver el aviso legal completo en el README del repositorio.)
 
 ---
 
-## ⚡ Innovaciones Vanguardistas
+## El problema que resuelve
 
-### 👁️ El Ojo Guardián 24/7 (v2.15.1 Optimized)
-Sensores de alta fidelidad que analizan patrones de riesgo. El sistema ahora incluye candados de anti-spam para evitar falsos positivos y saturación de alertas ante un solo evento físico.
+En una emergencia real, desbloquear el teléfono, buscar un contacto y explicar dónde estás toma demasiado tiempo — y a veces ni siquiera es posible tocar la pantalla. ARGOS reduce ese momento a cero fricción: el propio teléfono vigila (sensores), el SOS sale con ubicación exacta hacia las personas que elegiste, y la red de guardianes puede ver el desplazamiento en tiempo real sobre el mapa.
 
-### 👪 Círculo de Guardianes
-Tu red de seguridad humana. Vincula a tus contactos para que reciban alertas SOS con geolocalización exacta en tiempo real.
+## Funcionalidades (verificadas en el código)
 
-### 🛡️ Santuarios Automáticos (Powered by OSM)
-El mapa escanea dinámicamente tu entorno usando la **Overpass API**. Encuentra estaciones de policía, hospitales y refugios reales en cualquier ciudad del mundo.
+La app está organizada por *features* en `lib/features/`, y cada módulo existe como carpeta propia:
 
----
+- **👁️ Ojo Guardián** (`features/eye_guardian`) — Vigilancia 24/7 con el acelerómetro (`sensors_plus`) desde un servicio en segundo plano (`flutter_background_service`): una sacudida fuerte supera el umbral de magnitud y dispara el protocolo SOS. Incluye candado de concurrencia anti-spam y cooldown entre alertas automáticas para evitar falsos positivos y saturación ante un solo evento físico.
+- **🆘 Protocolo SOS blindado** — Las pantallas de confirmación y clasificación del incidente bloquean el retroceso (PopScope): el usuario debe clasificar el incidente o cancelar la alerta explícitamente, y no puede enviarse una segunda alerta mientras una siga activa. La clasificación alimenta las zonas de peligro comunitarias.
+- **👪 Círculo de Guardianes** (`features/family_circle`) — Red de contactos de confianza que reciben el SOS con geolocalización en tiempo real y pueden seguir al protegido en el mapa. Incluye el **Modo Travesía**: rastreo de alta frecuencia (cada 5 segundos, precisión alta de ubicación) durante un trayecto, con botón para finalizar el recorrido.
+- **🗺️ Mapa, rutas y zonas de peligro** (`features/routes`) — Mapa interactivo con `flutter_map` (OpenStreetMap), motor de rutas OSRM, zonas de peligro que ajustan la valoración de seguridad de la ruta y búsqueda de lugares OSM.
+- **🏠 Santuarios automáticos** (`features/santuaries`) — Lugares seguros con geofencing (radio automático de 200 m): el mapa consulta la Overpass API para localizar estaciones de policía, hospitales y refugios reales alrededor, y al registrar un lugar el círculo recibe una notificación.
+- **🔐 Cuentas y perfil** (`features/auth`, `features/profile`) — Registro, inicio de sesión y gestión de permisos críticos del dispositivo.
+- **🔔 Notificaciones críticas** — OneSignal (API REST + SDK) para push de alta prioridad a los guardianes, y notificaciones locales.
+- **🔄 Actualizaciones OTA** — Actualización de la app dentro de la propia app (`ota_update`), con sincronización de versiones mediante Supabase; compilación oficial con GitHub Actions (workflow de release).
 
-## 🏗️ Arquitectura Técnica
+## Arquitectura
 
-- **Framework**: Flutter 3.x (Dart) - Arquitectura Atómica y escalable.
-- **Backend**: Supabase Realtime - Sincronización de milisegundos.
-- **Push Engine**: OneSignal REST API - Entrega crítica priorizada.
-- **Design System**: Liquid Glass UI - Estética premium con tokens de contraste dinámicos.
+Arquitectura por *features* («Atomic Features»): cada capacidad vive en su propio silo bajo `lib/features/`, sobre un núcleo común en `lib/core/` (red, temas, componentes de UI `GlassBox`, utilidades), para que un fallo en el mapa no detenga la protección del Ojo Guardián.
 
----
+- El **servicio en segundo plano** corre en un isolate propio que escucha el acelerómetro, aplica la lógica de decisión (umbral, anti-spam, cooldown de 3 minutos entre SOS automáticos) y se comunica de forma bidireccional con la UI.
+- El **flujo de alerta**: sensor → isolate de fondo → inserción de la alerta en Supabase → push de alta prioridad vía OneSignal a los guardianes → el mapa del círculo se actualiza por streams en tiempo real de Supabase.
+- **Sistema de diseño «Liquid Glass»**: interfaz glassmorphism con tokens de contraste dinámicos para modo claro y oscuro.
 
-## ⚠️ Aviso Legal y Propiedad Intelectual
+Detalle completo en el propio repositorio: [`TECHNICAL_GUIDE.md`](https://github.com/itssebxs/Argos_mobile/blob/main/TECHNICAL_GUIDE.md) y [`CHANGELOG.md`](https://github.com/itssebxs/Argos_mobile/blob/main/CHANGELOG.md).
 
-> [!CAUTION]
-> **CÓDIGO PÚBLICO ≠ CÓDIGO ABIERTO (OPEN SOURCE)**
-> 
-> Este repositorio es de visibilidad pública exclusivamente para fines de demostración de portafolio y revisión académica. **No posee ninguna licencia de uso libre.**
-> 
-> - **Todos los Derechos Reservados**: Luis Shagñay (itssebxs) retiene la propiedad total y exclusiva de este software.
-> - **Prohibida la Reproducción**: Queda estrictamente prohibido el uso, copia, modificación, fusión, publicación o distribución de este código sin un permiso previo y por escrito del autor.
->
-> *Cualquier infracción a estos términos será tratada bajo las leyes de propiedad intelectual vigentes.*
+## Tecnologías
 
----
+| Capa | Tecnología |
+|---|---|
+| App móvil | Flutter 3.x · Dart |
+| Sensores | sensors_plus (acelerómetro/giroscopio) |
+| Ubicación | geolocator · latlong2 |
+| Mapas | flutter_map + OpenStreetMap · Overpass API · OSRM |
+| Segundo plano | flutter_background_service · flutter_local_notifications |
+| Backend (BaaS) | Supabase (PostgreSQL, Realtime, Auth) — `supabase_flutter` |
+| Push | OneSignal — `onesignal_flutter` + API REST |
+| Actualizaciones | ota_update · GitHub Actions (release) |
+| Configuración | flutter_dotenv (`.env`) · shared_preferences |
 
-## 🛠️ Configuración de Desarrollo
+## Estructura del repositorio
 
-Es obligatorio contar con un archivo `.env` configurado en la raíz:
+- `lib/main.dart` (y variantes `main_direct.dart` / `main_store.dart`) — puntos de entrada
+- `lib/core/` — núcleo: red, temas, UI modular y utilidades
+- `lib/features/` — `auth` · `eye_guardian` · `family_circle` · `profile` · `routes` · `sanctuaries`
+- `TECHNICAL_GUIDE.md` — manual de arquitectura del sistema
+- `CHANGELOG.md` — historial de versiones
+- `.github/` — workflow de compilación y release del APK
 
-```env
-SUPABASE_URL=tu_url
-SUPABASE_ANON_KEY=tu_anon_key
-ONESIGNAL_APP_ID=uuid
-ONESIGNAL_REST_API_KEY=api_key
-```
+## Ejecución local
 
-### Comandos de inicio:
+Requiere un archivo `.env` en la raíz con las claves del proyecto (Supabase y OneSignal; nunca se suben valores al repositorio):
+
 ```bash
 flutter pub get
 flutter run --release
+# Build de producción:
+flutter build apk --split-per-abi --release
 ```
 
+## Estado
+
+Aplicación en producción y en evolución continua, con releases públicas del APK en GitHub y sitio web propio.
+
 ---
-*Desarrollado con precisión técnica por Luis Shagñay. 🛡️*
+
+Desarrollado por **Luis Shagñay** — diseño, desarrollo móvil y arquitectura completa de ARGOS. Más proyectos en su [portafolio](https://luisshagnay.vercel.app/proyectos).
