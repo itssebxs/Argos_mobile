@@ -61,6 +61,28 @@ subprojects {
     }
 }
 
+// Alinea tambien el jvmTarget de Kotlin (no solo Java) a 17 en todos los
+// submódulos. Algunos plugins antiguos (in_app_update, flutter_vibrate)
+// dejan Kotlin en 1.8 mientras Java ya compila en 17, lo que rompe el build.
+subprojects {
+    afterEvaluate {
+        tasks.configureEach {
+            val task = this
+            val className = task.javaClass.name
+            if (className.contains("KotlinCompile") && !className.contains("KotlinCompile\$")) {
+                runCatching {
+                    val kotlinOptions = task.javaClass.methods
+                        .firstOrNull { it.name == "getKotlinOptions" && it.parameterCount == 0 }
+                        ?.invoke(task)
+                    kotlinOptions?.javaClass?.methods
+                        ?.firstOrNull { it.name == "setJvmTarget" && it.parameterCount == 1 }
+                        ?.invoke(kotlinOptions, JavaVersion.VERSION_17.toString())
+                }
+            }
+        }
+    }
+}
+
 subprojects {
     project.evaluationDependsOn(":app")
 }
