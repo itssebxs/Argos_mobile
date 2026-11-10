@@ -5,6 +5,15 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 
 ---
 
+## [2.16.8] - 2026-11-09
+### 🔐 Recuperación de contraseña
+- **Fix crítico**: El APK `argos_direct` (`main_direct.dart`) no escuchaba el evento `passwordRecovery`, por lo que al abrir el enlace del correo la app no mostraba la pantalla de nueva contraseña. Al hacer clic de nuevo, Supabase ya había consumido el token y devolvía `otp_expired`.
+- **Listener temprano**: El handler se inicia inmediatamente después de `Supabase.initialize()`, antes de `runApp()`, para no perder el evento del deep link.
+- **Todos los flavors**: El flujo ahora funciona igual en `main.dart`, `main_direct.dart` y `main_store.dart`.
+- **Navegación**: La pantalla de reset ya no depende del `MainNavigator` de otro entry point.
+
+---
+
 ## [2.16.7] - 2026-11-09
 ### 🚀 Publicación y compatibilidad
 - **CI/CD**: Corregido el build con Flutter 3.47+ (`CupertinoPageTransitionsBuilder` ya no es constante).

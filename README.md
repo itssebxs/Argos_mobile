@@ -2,7 +2,7 @@
 
 **ARGOS** es una aplicación móvil de seguridad personal construida con Flutter: detecta situaciones de riesgo con los sensores del teléfono, envía alertas SOS con geolocalización a un círculo de personas de confianza («guardianes»), muestra santuarios y rutas sobre un mapa, y mantiene la protección activa en segundo plano, aunque el teléfono esté bloqueado.
 
-- 📱 **Versión (pubspec):** 2.16.7+126
+- 📱 **Versión (pubspec):** 2.16.8+127
 - 📥 **APK oficial:** [última release](https://github.com/itssebxs/Argos_mobile/releases/latest/download/app-argos_direct-release.apk)
 - 🌐 **Sitio del proyecto:** [argospage.vercel.app](https://argospage.vercel.app) (repositorio `itssebxs/Argospage`)
 

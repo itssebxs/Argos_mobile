@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/network/auth_service.dart';
 import '../../../core/ui/glass_box.dart';
 import '../../../core/ui/argos_background.dart';
 import '../../../core/utils/ui_tokens.dart';
 import '../../../core/utils/ui_utils.dart';
-import '../../../../main.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({super.key});
+  /// Permite a cada entry point (main.dart, main_direct.dart, main_store.dart)
+  /// indicar a qué pantalla ir después de actualizar la contraseña, evitando
+  /// depender de un `MainNavigator` de otro entry point.
+  final Widget Function()? onSuccessBuilder;
+
+  const ResetPasswordScreen({super.key, this.onSuccessBuilder});
 
   @override
   State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
@@ -38,6 +43,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       return;
     }
 
+    if (Supabase.instance.client.auth.currentSession == null) {
+      UiUtils.showError(
+        "El enlace expiró o no es válido. Solicita uno nuevo.",
+      );
+      return;
+    }
+
     setState(() => _isLoading = true);
 
     final error = await _auth.actualizarContrasena(pass);
@@ -46,11 +58,16 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       setState(() => _isLoading = false);
       if (error == null) {
         UiUtils.showSuccess("Contraseña actualizada correctamente");
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const MainNavigator()),
-          (route) => false,
-        );
+        final destination = widget.onSuccessBuilder?.call();
+        if (destination != null) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => destination),
+            (route) => false,
+          );
+        } else {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        }
       } else {
         UiUtils.showError(error);
       }

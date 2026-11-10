@@ -19,6 +19,8 @@ import 'features/auth/ui/login_screen.dart';
 import 'features/auth/ui/permission_explanation_screen.dart'; // Import v2.6.5
 import 'features/eye_guardian/ui/alert_confirmation_screen.dart'; // AlertConfirmation
 import 'core/network/auth_service.dart';
+import 'core/auth/password_recovery_handler.dart';
+import 'features/auth/ui/reset_password_screen.dart';
 import 'core/ui/glass_box.dart';
 import 'core/utils/connectivity_service.dart'; // Import connectivity service
 import 'features/eye_guardian/logic/background_service.dart'; // Import REAL background service
@@ -53,6 +55,10 @@ Future<void> main() async {
     url: dotenv.env['SUPABASE_URL']!,
     anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
   );
+
+  // Debe iniciarse justo después de Supabase.initialize para no perder el
+  // evento passwordRecovery que dispara el deep link del correo.
+  PasswordRecoveryHandler.start();
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -153,6 +159,31 @@ class _InitialCheckWrapperState extends State<InitialCheckWrapper> {
   void initState() {
     super.initState();
     _initializeApp();
+    PasswordRecoveryHandler.pending.addListener(_handlePasswordRecovery);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _handlePasswordRecovery();
+    });
+  }
+
+  void _handlePasswordRecovery() {
+    if (!PasswordRecoveryHandler.pending.value) return;
+    if (!mounted) return;
+
+    PasswordRecoveryHandler.consume();
+    debugPrint("🔐 ARGOS: Recuperación de contraseña detectada");
+    navigatorKey.currentState?.pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => ResetPasswordScreen(
+          onSuccessBuilder: () => const MainNavigator(),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    PasswordRecoveryHandler.pending.removeListener(_handlePasswordRecovery);
+    super.dispose();
   }
 
   Future<void> _initializeApp() async {
