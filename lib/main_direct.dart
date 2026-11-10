@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart' show CupertinoPageTransitionsBuilder;
 import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart'; // Import OneSignal
@@ -104,7 +105,7 @@ class ArgosApp extends StatelessWidget {
               useMaterial3: true,
               fontFamily:
                   'Roboto', // v2.16.1: Regresamos a Roboto para asegurar consistencia
-              pageTransitionsTheme: const PageTransitionsTheme(
+              pageTransitionsTheme: PageTransitionsTheme(
                 builders: {
                   TargetPlatform.android: CupertinoPageTransitionsBuilder(),
                   TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
@@ -118,7 +119,7 @@ class ArgosApp extends StatelessWidget {
               primaryColor: const Color(0xFFE53935),
               useMaterial3: true,
               fontFamily: 'Roboto',
-              pageTransitionsTheme: const PageTransitionsTheme(
+              pageTransitionsTheme: PageTransitionsTheme(
                 builders: {
                   TargetPlatform.android: CupertinoPageTransitionsBuilder(),
                   TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),

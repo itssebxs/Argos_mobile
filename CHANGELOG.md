@@ -5,6 +5,14 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 
 ---
 
+## [2.16.7] - 2026-11-09
+### 🚀 Publicación y compatibilidad
+- **CI/CD**: Corregido el build con Flutter 3.47+ (`CupertinoPageTransitionsBuilder` ya no es constante).
+- **Release**: APK `argos_direct` publicado de nuevo en la release `latest`.
+- **Docs**: Enlace de descarga actualizado al artefacto correcto (`app-argos_direct-release.apk`).
+
+---
+
 ## [2.16.6] - 2026-05-13
 ### 🔄 Sincronización y Flujo de Actualización
 - **📡 Robustecimiento OTA**: Corregido el flujo de actualización automática. Ahora el sistema asegura que la base de datos de Supabase y el APK descargable estén siempre en sincronía total con la última compilación.
