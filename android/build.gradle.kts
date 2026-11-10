@@ -37,6 +37,17 @@ subprojects {
                 defaultConfig {
                     targetSdkVersion(34)
                 }
+                compileOptions {
+                    sourceCompatibility = JavaVersion.VERSION_17
+                    targetCompatibility = JavaVersion.VERSION_17
+                }
+            }
+
+            // Alinea plugins antiguos (p. ej. flutter_vibrate) con el jvmTarget 17
+            // que usa Kotlin desde Flutter 3.47.
+            tasks.withType<org.gradle.api.tasks.compile.JavaCompile>().configureEach {
+                sourceCompatibility = JavaVersion.VERSION_17.toString()
+                targetCompatibility = JavaVersion.VERSION_17.toString()
             }
 
             if (!project.hasProperty("flutter")) {
